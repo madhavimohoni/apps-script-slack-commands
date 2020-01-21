@@ -16,7 +16,7 @@
     4. Add your new command on api.slack.com/apps with the request URL as the current web app URL from step 4.
 
   *****************************************************************************************************************/       
-const myCommand = require('./commands/myCommand')
+const myCommand = require('./commands/myCommand');
 /**
  *   Inbuilt POST request endpoint function in Google Apps Script. Must be named doPost
  */
