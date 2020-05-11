@@ -40,9 +40,9 @@ function doPost(request) {
 
     // @TODO handle error. Below is code for mailing yourself about it.
 
-    var recipients = scriptProperties.getProperty("email");
-    var command = request.parameters.command || "";
-    MailApp.sendEmail(recipients, "Slack command " + command + " messed up", e.stack);
+    const recipients = scriptProperties.getProperty("email");
+    const command = request.parameters.command || "";
+    MailApp.sendEmail(recipients, "Slack command " + command + " failed", e.stack);
 
     // @TODO set general error message
     const output = {
