@@ -16,21 +16,19 @@
     4. Add your new command on api.slack.com/apps with the request URL as the current web app URL from step 4.
 
   *****************************************************************************************************************/       
-const myCommand = require('./commands/myCommand');
 /**
  *   Inbuilt POST request endpoint function in Google Apps Script. Must be named doPost
  */
 function doPost(request) {
 
   // Token verification
-  var scriptProperties = PropertiesService.getScriptProperties();
-  var slackToken = scriptProperties.getProperty("SLACK_TOKEN"); // @TODO: Set token prior if checking. 
-  var requestToken = request.parameter.token;
+  const scriptProperties = PropertiesService.getScriptProperties();
+  const slackToken = scriptProperties.getProperty("SLACK_TOKEN"); // @TODO: Set token prior if checking. 
+  const requestToken = request.parameter.token;
   if (slackToken !== requestToken) {
-    var output = {
+    return generateResponse({
       "text": "INVALID TOKEN"
-    };
-    return generateResponse(output);
+    });
   }
 
   // Command handling 
@@ -44,15 +42,10 @@ function doPost(request) {
 
     var recipients = scriptProperties.getProperty("email");
     var command = request.parameters.command || "";
-    MailApp.sendEmail(recipients, "Slack command " + command + " messed up",
-      "\r\nMessage: " + e.message +
-      "\r\nFile: " + e.fileName +
-      "\r\nLine: " + e.lineNumber +
-      "\r\nTrace: " + e.stack +
-      "\r\n\nLogs: " + Logger.getLog());
+    MailApp.sendEmail(recipients, "Slack command " + command + " messed up", e.stack);
 
     // @TODO set general error message
-    var output = {
+    const output = {
       "text": "Something went wrong! (and I've mailed " + recipients.replace(",", ", ") + " about it)"
     };
 
@@ -69,11 +62,13 @@ function handle(request) {
     return;
   }
 
-  var output;
-  var params = request.parameters;
-  var command = String(params.command);
-  var text = params.text;
-
+  let output;
+  const {
+    command,
+    text
+  } = request.parameters;
+  command = String(command);
+  
   // @TODO Replace the following sample with any handling process of your choice
   switch (command) {
 
