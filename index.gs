@@ -44,11 +44,11 @@ function doPost(request) {
 
     const recipients = scriptProperties.getProperty("email");
     const command = request.parameters.command || "";
-    MailApp.sendEmail(recipients, "Slack command " + command + " failed", e.stack);
+    MailApp.sendEmail(recipients, `Slack command ${command} failed`, e.stack);
 
     // @TODO set general error message
     const output = {
-      "text": "Something went wrong! (and I've mailed " + recipients.replace(",", ", ") + " about it)"
+      "text": `Something went wrong! (and I've mailed ${recipients.replace(",", ", ")} about it)`
     };
 
     return generateResponse(output);
@@ -84,7 +84,7 @@ function handle(request) {
 
     default: {
       output = {
-        "text": "Sorry, I don't know how to `" + command + "` ☹",
+        "text": `\`${command}"\` is not a valid command.`,
         "response_type": "in_channel"
       };
     }
