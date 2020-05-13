@@ -23,7 +23,9 @@ function doPost(request) {
 
   // Token verification
   const scriptProperties = PropertiesService.getScriptProperties();
-  const slackToken = scriptProperties.getProperty("SLACK_TOKEN"); // @TODO: Set token prior if checking. 
+  
+  /** OPTIONAL: TOKEN CHECK **/
+  const slackToken = scriptProperties.getProperty("SLACK_TOKEN"); // @TODO: Set token in script properties 
   const requestToken = request.parameter.token;
   if (slackToken !== requestToken) {
     return generateResponse({
